@@ -1,3 +1,11 @@
+//
+//  main.c
+//  程序设计
+//
+//  Created by MozhuCY on 2018/4/2.
+//  Copyright © 2018年 MozhuCY. All rights reserved.
+//
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> 
