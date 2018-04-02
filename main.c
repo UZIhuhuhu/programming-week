@@ -70,6 +70,30 @@ void edit(){
         printf("未查询到学生信息");
         return;
     }
+    printf("===================");
+    printf("1.修改姓名\n2.修改年龄\n3.修改学号\n4.修改电话\n5.修改班级\n");
+    printf("===================");
+    int choose;
+    scanf("%d",&choose);
+    switch(choose){
+        case 1:
+            scanf("%s",student[checkid].name);
+            break;
+        case 2:
+            scanf("%d",&student[checkid].age);
+            break;
+        case 3:
+            scanf("%s",student[checkid].StudentID);
+            break;
+        case 4:
+            scanf("%d",&student[checkid].tel);
+            break;
+        case 5:
+            scanf("%d",&student[checkid]._class);
+            break;
+        default:
+            return;
+    }
 }
 void fun(){
     int i;
@@ -97,6 +121,5 @@ int main(){
     printf("=================================\n");
     printf("学生选修课系统：powered by W8Cloud\n");
     printf("=================================\n");
-    NULL;
     fun();
 }
