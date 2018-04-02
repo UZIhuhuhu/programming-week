@@ -1,15 +1,8 @@
-//
-//  main.c
-//  ç¨‹åºè®¾è®¡
-//
-//  Created by MozhuCY on 2018/4/2.
-//  Copyright Â© 2018å¹´ MozhuCY. All rights reserved.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> 
 int io=0;
+int cid=0;
 struct student{
     int age;
     char name[20];
@@ -26,36 +19,81 @@ struct course{
     int p_num;
     int term;
 }course[100];
+void replace(char * a){
+	int len = strlen(a);
+	a[len]='\x00';
+}
+int if_in(char * a){
+	int checkid=-1;
+	int i;
+    for(i=0;i<io;i++){
+        if(!strcmp(student[i].StudentID,a)){
+            printf("¸ÃÑ§ºÅÒÑ¾­´æÔÚ!\n"); 
+            return 1;
+        }
+	}
+	if(!(checkid+1)){
+        strcpy(student[io].StudentID,a); 
+        return 0;
+    }
+}
+void c_scanf(){
+    printf("¿Î³ÌÃû×Ö£º");
+    scanf("%s",course[cid]._name);
+    printf("¿Î³ÌĞÔÖÊ£º");
+    scanf("%s",course[cid]._xingzhi);
+    printf("Ñ§Ê±£º");
+    scanf("%d",&course[cid].time);
+    printf("¿Î³Ì×ÜÁ¿£º");
+    scanf("%d",&course[cid].p_num);
+    printf("¿ª¿ÎÑ§ÆÚ£º");
+    scanf("%d",&course[cid].term);
+    cid++;
+}
 void _scanf(int i){
-    printf("æ‚¨çš„å§“åï¼š");
+	char a[20];
+	printf("ÄúµÄÑ§ºÅ£º");
+	scanf("%s",a);
+    if(if_in(a)){
+    	return ;
+	};
+    printf("ÄúµÄĞÕÃû£º");
     scanf("%s",student[i].name);
-    printf("æ‚¨çš„å­¦å·ï¼š");
-    scanf("%s",student[i].StudentID);
-    printf("æ‚¨çš„å¹´é¾„ï¼š");
+    printf("ÄúµÄÄêÁä£º");
     scanf("%d",&student[i].age);
-    printf("æ‚¨çš„æ€§åˆ«ï¼š");
+    printf("ÄúµÄĞÔ±ğ£º");
     scanf("%s",student[i].sex);
-    printf("æ‚¨çš„ç”µè¯ï¼š");
+    printf("ÄúµÄµç»°£º");
     scanf("%d",&student[i].tel);
-    printf("æ‚¨çš„ç­çº§ï¼š");
+    printf("ÄúµÄ°à¼¶£º");
     scanf("%d",&student[i]._class);
     io++;
 }
+
 void _print(int i){
     printf("===================\n");
-    printf("å§“åï¼š%s\n",student[i].name);
-    printf("å­¦å·ï¼š%s\n",student[i].StudentID);
-    printf("å¹´é¾„ï¼š%d\n",student[i].age);
-    printf("æ€§åˆ«ï¼š%s\n",student[i].sex);
-    printf("ç”µè¯ï¼š%d\n",student[i].tel);
-    printf("ç­çº§ï¼š%d\n",student[i]._class);
+    printf("ĞÕÃû£º%s\n",student[i].name);
+    printf("Ñ§ºÅ£º%s\n",student[i].StudentID);
+    printf("ÄêÁä£º%d\n",student[i].age);
+    printf("ĞÔ±ğ£º%s\n",student[i].sex);
+    printf("µç»°£º%d\n",student[i].tel);
+    printf("°à¼¶£º%d\n",student[i]._class);
+    printf("===================\n");
+}
+void c_print(int i){
+    printf("===================\n");
+    printf("¿Î³ÌÃû³Æ£º%s\n",course[i]._name);
+    printf("¿Î³ÌĞÔÖÊ£º%s\n",course[i]._xingzhi);
+    printf("¿ª¿ÎÑ§ÆÚ£º%d\n",course[i].term);
+    printf("¿Î³Ì×ÜÁ¿£º%d\n",course[i].p_num);
+    printf("¿ÎÊ±£º%d\n",course[i].time);
     printf("===================\n");
 }
 int check(){
     char id[20];
     int i;
     int checkid=-1;
-    printf("è¯·è¾“å…¥æ‚¨è¦ä¿®æ”¹çš„å­¦å·:ã€€");
+    printf("ÇëÊäÈëÄúÒªĞŞ¸ÄµÄÑ§ºÅ:¡¡");
     scanf("%s",id);
     for(i=0;i<io;i++){
         if(!strcmp(student[i].StudentID,id)){
@@ -63,7 +101,7 @@ int check(){
         }
     }
     if(!(checkid+1)){
-        printf("æœªæŸ¥è¯¢åˆ°å­¦ç”Ÿä¿¡æ¯\n");
+        printf("Î´²éÑ¯µ½Ñ§ÉúĞÅÏ¢\n");
         return -1;
     }
     return checkid;
@@ -73,29 +111,29 @@ void edit(){
     int i;
     int checkid=check();
     printf("===================\n");
-    printf("[1] ä¿®æ”¹å§“å\n[2] ä¿®æ”¹å¹´é¾„\n[3] ä¿®æ”¹å­¦å·\n[4] ä¿®æ”¹ç”µè¯\n[5] ä¿®æ”¹ç­çº§\n");
+    printf("[1] ĞŞ¸ÄĞÕÃû\n[2] ĞŞ¸ÄÄêÁä\n[3] ĞŞ¸ÄÑ§ºÅ\n[4] ĞŞ¸Äµç»°\n[5] ĞŞ¸Ä°à¼¶\n");
     printf("===================\n");
     int choose;
     scanf("%d",&choose);
     switch(choose){
         case 1:
-            printf("æ‚¨çš„å§“å:");
+        	printf("ÄúµÄĞÕÃû:");
             scanf("%s",student[checkid].name);
             break;
         case 2:
-            printf("æ‚¨çš„å¹´é¾„:");
+        	printf("ÄúµÄÄêÁä:");
             scanf("%d",&student[checkid].age);
             break;
         case 3:
-            printf("æ‚¨çš„å­¦å·:");
+        	printf("ÄúµÄÑ§ºÅ:");
             scanf("%s",student[checkid].StudentID);
             break;
         case 4:
-            printf("æ‚¨çš„ç”µè¯:");
+        	printf("ÄúµÄµç»°:");
             scanf("%d",&student[checkid].tel);
             break;
         case 5:
-            printf("æ‚¨çš„ç­çº§:");
+        	printf("ÄúµÄ°à¼¶:");
             scanf("%d",&student[checkid]._class);
             break;
         default:
@@ -103,49 +141,149 @@ void edit(){
     }
 }
 void count(){
-    printf("=====================\n");
-    printf("å·²å½•å…¥å­¦ç”Ÿäººæ•°: %d\n",io);
-    printf("=====================\n");
-     
+	printf("=====================\n");
+	printf("ÒÑÂ¼ÈëÑ§ÉúÈËÊı: %d\n",io);
+	printf("=====================\n");
+	 
 }
 void pcheck(){
-    int i=check();
-    if(i!=-1) _print(i);
-    else return;
+	int i=check();
+	if(i!=-1) _print(i);
+	else return;
+}
+int ccheck(){
+	int i,checkid=-1;
+	char name[20];
+	printf("ÇëÊäÈë¿Î³ÌÃû³Æ:");
+	scanf("%s",name); 
+    for(i=0;i<cid;i++){
+        if(!strcmp(course[i]._name,name)){
+            checkid=i;
+        }
+    }
+    if(!(checkid+1)){
+        printf("Î´²éÑ¯µ½¿Î³ÌĞÅÏ¢\n");
+        return -1;
+    }
+    return checkid;
+}
+void c_check(){
+	int i=ccheck();
+	if(i!=-1) c_print(i);
+	else return;
 }
 void _del(int id){
-    int i;
-    for(i=id;i<io;i++){
-        strcpy(student[i].name,student[i+1].name);
-        student[i].age = student[i+1].age;
-        strcpy(student[i].StudentID,student[i+1].StudentID);
-        strcpy(student[i].sex,student[i+1].sex);
-        student[i].tel=student[i+1].tel;
-        student[i]._class=student[i+1]._class;
-        io--; 
-    }
+	int i;
+	for(i=id;i<io;i++){
+		strcpy(student[i].name,student[i+1].name);
+		student[i].age = student[i+1].age;
+		strcpy(student[i].StudentID,student[i+1].StudentID);
+		strcpy(student[i].sex,student[i+1].sex);
+		student[i].tel=student[i+1].tel;
+		student[i]._class=student[i+1]._class;
+		io--; 
+	}
 }
 void del(){
-    int id = check();
-    char ch[1];
-    while(1){
-        printf("ç¡®å®šåˆ é™¤æ­¤æ•°æ®å—(Y/N)\n"); 
-        scanf("%s",ch);
-        if(!strcmp(ch,"Y")){
-            _del(id);
-            printf("åˆ é™¤æˆåŠŸ"); 
-            return; 
-        }
-        else if(!strcmp(ch,"N")){
-            return;
-        } 
-    }
+	int id = check();
+	char ch[1];
+	while(1){
+		printf("È·¶¨É¾³ı´ËÊı¾İÂğ(Y/N)\n"); 
+		scanf("%s",ch);
+		if(!strcmp(ch,"Y")){
+			_del(id);
+			printf("É¾³ı³É¹¦\n"); 
+			return;	
+		}
+		else if(!strcmp(ch,"N")){
+			return;
+		} 
+	}
 } 
-
-void fun(){
+void save(){
+	FILE * fp ;
+	fp = fopen("message.txt","w");
+	int i;
+	for(i=0;i<io;i++){
+		fprintf(fp,"0\n");
+    	fprintf(fp,"%s\n",student[i].StudentID);
+    	fprintf(fp,"%s\n",student[i].name);
+    	fprintf(fp,"%d\n",student[i].age);
+    	fprintf(fp,"%s\n",student[i].sex);
+    	fprintf(fp,"%d\n",student[i].tel);
+    	fprintf(fp,"%d\n",student[i]._class);
+	}
+	fprintf(fp,"1");
+	fclose(fp);
+	printf("===============\n");
+	printf("[*]ÎÄ¼ş±£´æ³É¹¦\n");
+	printf("===============\n"); 
+}
+void csave(){
+	FILE * fp ;
+	fp = fopen("course.txt","w");
+	int i;
+	for(i=0;i<cid;i++){
+		fprintf(fp,"0\n");
+    	fprintf(fp,"%s\n",course[i]._name);
+    	fprintf(fp,"%s\n",course[i]._xingzhi);
+    	fprintf(fp,"%d\n",course[i].time);
+    	fprintf(fp,"%d\n",course[i].p_num);
+    	fprintf(fp,"%d\n",course[i].term);
+	}
+	fprintf(fp,"1");
+	fclose(fp);
+	printf("===============\n");
+	printf("[*]ÎÄ¼ş±£´æ³É¹¦\n");
+	printf("===============\n"); 
+}
+void read(){
+	FILE * fp;
+	fp = fopen("message.txt","r");
+	while(1){
+		int flag=0; 
+		fscanf(fp,"%d",&flag);
+		if(flag){
+			return;
+		} 
+		fscanf(fp,"%s",student[io].StudentID);
+		replace(student[io].StudentID); 
+    	fscanf(fp,"%s",student[io].name);
+    	fscanf(fp,"%d",&student[io].age);
+    	fscanf(fp,"%s",student[io].sex);
+    	fscanf(fp,"%d",&student[io].tel);
+    	fscanf(fp,"%d",&student[io]._class);
+    	io+=1;
+	}
+	printf("===============\n");
+	printf("[*]ÎÄ¼ş¶ÁÈ¡³É¹¦\n"); 
+	printf("===============\n");
+}
+void cread(){
+	FILE * fp;
+	fp = fopen("course.txt","r");
+	while(1){
+		int flag=0; 
+		fscanf(fp,"%d",&flag);
+		if(flag){
+			return;
+		} 
+		fscanf(fp,"%s",course[cid]._name);
+		replace(student[cid].StudentID); 
+    	fscanf(fp,"%s",course[cid]._xingzhi);
+    	fscanf(fp,"%d",&course[cid].time);
+    	fscanf(fp,"%d",&course[cid].p_num);
+    	fscanf(fp,"%d",&course[cid].term);
+    	cid+=1;
+	}
+	printf("===============\n");
+	printf("[*]ÎÄ¼ş¶ÁÈ¡³É¹¦\n"); 
+	printf("===============\n");
+}
+void stdu(){
     int i;
     while(1){
-        printf("\né€‰æ‹©åŠŸèƒ½\n[1] å½•å…¥\n[2] è¯»å–ä¿¡æ¯æˆ–æŸ¥è¯¢\n[3] ç¼–è¾‘\n[4] ç»Ÿè®¡\n[5] åˆ é™¤ä¿¡æ¯\n[6] é€€å‡º\nè¯·è¾“å…¥é€‰æ‹©ï¼š");
+        printf("\nÑ¡Ôñ¹¦ÄÜ\n[1] Â¼Èë\n[2] ²éÑ¯Ñ§ÉúĞÅÏ¢\n[3] ±à¼­\n[4] Í³¼Æ\n[5] É¾³ıĞÅÏ¢\n[6] ´æ´¢ĞÅÏ¢µ½ÎÄ¼ş\n[7] ¶ÁÈ¡ÎÄ¼şĞÅÏ¢\n[9] Àë¿ª×Ó³ÌĞò\nÇëÊäÈëÑ¡Ôñ£º");
         scanf("%d",&i);
         switch(i){
             case 1:
@@ -158,21 +296,70 @@ void fun(){
                 edit();
                 break;
             case 4:
-                count();
-                break;
+            	count();
+            	break;
             case 5:
-                del();
-                break;
+            	del();
+            	break;
             case 6:
-                exit(0);
+            	save();
+            	break;
+            case 7:
+            	read();
+            	break;
+            case 9:
+				return; 
             default:
                 printf("ERROR");
         }
     }
 }
+void cour(){
+	int i;
+    while(1){
+        printf("\nÑ¡Ôñ¹¦ÄÜ\n[1] Â¼Èë\n[2] ²éÑ¯¿Î³ÌĞÅÏ¢\n[3]´æ´¢ĞÅÏ¢µ½ÎÄ¼ş\n[4] ¶ÁÈ¡ÎÄ¼şĞÅÏ¢\n[9] Àë¿ª×Ó³ÌĞò\nÇëÊäÈëÑ¡Ôñ£º");
+        scanf("%d",&i);
+        switch(i){
+            case 1:
+                c_scanf();
+                break;
+            case 2:
+				c_check();
+				break; 
+			case 3:
+				csave();
+				break; 
+			case 4:
+				cread();
+				break; 
+            case 9:
+				return; 
+            default:
+                printf("ERROR");
+        }
+    }
+} 
 int main(){
-    printf("=================================\n");
-    printf("å­¦ç”Ÿé€‰ä¿®è¯¾ç³»ç»Ÿï¼špowered by W8Cloud\n");
-    printf("=================================\n");
-    fun();
+    printf("==================================\n");
+    printf("Ñ§ÉúÑ¡ĞŞ¿ÎÏµÍ³£ºPowered by W8Cloud\n");
+    printf("==================================\n");
+    int i;
+    while(1){
+    	    printf("\n===================\n[1] Ñ§ÉúĞÅÏ¢¹ÜÀí\n[2] ¿Î³ÌĞÅÏ¢¹ÜÀí\n[3] Ñ§ÉúÑ¡¿Î\n[4] Àë¿ª³ÌĞò\n===================\nÇëÊäÈëÑ¡Ôñ£º"); 
+    	scanf("%d",&i);
+    	switch(i){
+			case 1: 
+    			stdu();
+    			break;
+			case 2:
+				cour(); 
+				break;
+			case 4:
+				return 0;
+			default:
+				printf("ERROR\n");
+				break; 
+    	} 
+    } 
 }
+
