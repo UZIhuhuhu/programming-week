@@ -1,14 +1,5 @@
-//
-//  main.c
-//  程序设计
-//
-//  Created by 黄兴源 on 2018/4/2.
-//  Copyright © 2018年 黄兴源. All rights reserved.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 int io=0;
 struct student{
     int age;
@@ -42,17 +33,19 @@ void _scanf(int i){
     io++;
 }
 void _print(int i){
+    printf("===================\n");
     printf("姓名：%s\n",student[i].name);
     printf("学号：%s\n",student[i].StudentID);
     printf("年龄：%d\n",student[i].age);
     printf("性别：%s\n",student[i].sex);
     printf("电话：%d\n",student[i].tel);
     printf("班级：%d\n",student[i]._class);
+    printf("===================\n");
 }
 void check(){
     char id[20];
     int i;
-    printf("请输入您要查询的学号");
+    printf("请输入您要查询的学号:　");
     scanf("%s",id);
     for(i=0;i<io;i++){
         if(!strcmp(student[i].StudentID,id)){
@@ -60,13 +53,28 @@ void check(){
             return;
         }
     }
-    printf("不存在的");
+    printf("不存在的\n");
 }
-
+void edit(){
+    char id[20];
+    int i;
+    int checkid=-1;
+    printf("请输入您要修改的学号:　");
+    scanf("%s",id);
+    for(i=0;i<io;i++){
+        if(!strcmp(student[i].StudentID,id)){
+            checkid=i;
+        }
+    }
+    if(!(checkid+1)){
+        printf("未查询到学生信息");
+        return;
+    }
+}
 void fun(){
     int i;
     while(1){
-        printf("\n选择功能\n1.录入\n2.读取\n3.查询\n4.编辑和删除\n5.统计\n6.退出\n请输入选择：");
+        printf("\n选择功能\n1.录入\n2.读取信息或查询\n3.编辑和删除\n4.统计\n5.退出\n请输入选择：");
         scanf("%d",&i);
         switch(i){
             case 1:
@@ -75,7 +83,10 @@ void fun(){
             case 2:
                 check();
                 break;
-            case 6:
+            case 3:
+                edit();
+                break;
+            case 5:
                 exit(0);
             default:
                 printf("ERROR");
@@ -83,5 +94,8 @@ void fun(){
     }
 }
 int main(){
+    printf("=================================\n");
+    printf("学生选修课系统：powered by W8Cloud\n");
+    printf("=================================\n");
     fun();
 }
