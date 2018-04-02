@@ -18,11 +18,33 @@ struct course{
     int p_num;
     int term;
 }course[100];
+void replace(char * a){
+    int len = strlen(a);
+    a[len]='\x00';
+}
+int if_in(char * a){
+    int checkid=-1;
+    int i;
+    for(i=0;i<io;i++){
+        if(!strcmp(student[i].StudentID,a)){
+            printf("该学号已经存在!\n"); 
+            return 1;
+        }
+    }
+    if(!(checkid+1)){
+        strcpy(student[io].StudentID,a); 
+        return 0;
+    }
+}
 void _scanf(int i){
+    char a[20];
+    printf("您的学号：");
+    scanf("%s",a);
+    if(if_in(a)){
+        return ;
+    };
     printf("您的姓名：");
     scanf("%s",student[i].name);
-    printf("您的学号：");
-    scanf("%s",student[i].StudentID);
     printf("您的年龄：");
     scanf("%d",&student[i].age);
     printf("您的性别：");
@@ -33,6 +55,7 @@ void _scanf(int i){
     scanf("%d",&student[i]._class);
     io++;
 }
+
 void _print(int i){
     printf("===================\n");
     printf("姓名：%s\n",student[i].name);
@@ -133,11 +156,46 @@ void del(){
         } 
     }
 } 
-
+void save(){
+    FILE * fp ;
+    fp = fopen("message.txt","w");
+    int i;
+    for(i=0;i<io;i++){
+        fprintf(fp,"0\n");
+        fprintf(fp,"%s\n",student[i].StudentID);
+        fprintf(fp,"%s\n",student[i].name);
+        fprintf(fp,"%d\n",student[i].age);
+        fprintf(fp,"%s\n",student[i].sex);
+        fprintf(fp,"%d\n",student[i].tel);
+        fprintf(fp,"%d\n",student[i]._class);
+    }
+    fprintf(fp,"1");
+    fclose(fp);
+    printf("文件保存成功\n"); 
+}
+void read(){
+    FILE * fp;
+    fp = fopen("message.txt","r");
+    while(1){
+        int flag=0; 
+        fscanf(fp,"%d",&flag);
+        if(flag){
+            return;
+        } 
+        fscanf(fp,"%s",student[io].StudentID);
+        replace(student[io].StudentID); 
+        fscanf(fp,"%s",student[io].name);
+        fscanf(fp,"%d",&student[io].age);
+        fscanf(fp,"%s",student[io].sex);
+        fscanf(fp,"%d",&student[io].tel);
+        fscanf(fp,"%d",&student[io]._class);
+        io+=1;
+    }
+}
 void fun(){
     int i;
     while(1){
-        printf("\n选择功能\n[1] 录入\n[2] 读取信息或查询\n[3] 编辑\n[4] 统计\n[5] 删除信息\n[6] 退出\n请输入选择：");
+        printf("\n选择功能\n[1] 录入\n[2] 读取信息或查询\n[3] 编辑\n[4] 统计\n[5] 删除信息\n[6] 存储信息到文件\n[7] 读取文件信息\n[8] debug专用\n[9] 离开程序\n请输入选择：");
         scanf("%d",&i);
         switch(i){
             case 1:
@@ -156,6 +214,15 @@ void fun(){
                 del();
                 break;
             case 6:
+                save();
+                break;
+            case 7:
+                read();
+                break;
+            case 8:
+                _print(0);
+                break; 
+            case 9:
                 exit(0);
             default:
                 printf("ERROR");
