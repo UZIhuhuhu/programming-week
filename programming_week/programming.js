@@ -6,7 +6,7 @@
  * @Author: wynnxin 
  * @Date: 2018-04-02 12:53:15 
  * @Last Modified by: wynnxin
- * @Last Modified time: 2018-04-02 19:01:37
+ * @Last Modified time: 2018-04-03 10:02:26
  */
 
 const studentsList = document.querySelector(`table tbody`);
