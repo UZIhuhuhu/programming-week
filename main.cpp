@@ -37,7 +37,6 @@ int if_in(char * a){
         return 0;
     }
 }
-
 void c_scanf(){
     printf("课程名字：");
     scanf("%s",course[cid]._name);
