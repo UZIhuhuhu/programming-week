@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <button>add</button>
+</body>
+<script>
+    const button = document.querySelector(`button`);
+    new Promise(function (resolve) {
+        const add = function () {
+            console.log(`first`);
+            const newDiv = document.createElement(`div`);
+            document.querySelector(`body`).appendChild(newDiv);
+            newDiv.className = `just test`;
+            const getDom = function () {
+                return this.newDiv;
+            }
+            
+            return getDom;
+            resolve();
+        }
+    }
+    )
+
+    // button.addEventListener(`click`,add);)
+    // const add = function() {
+    //     console.log(`first`);
+    //     const newDiv = document.createElement(`div`);
+    //     document.querySelector(`body`).appendChild(newDiv);
+    //     newDiv.className = `just test`;
+    //     const getDom = function(){
+    //         return this.newDiv;
+    //     }
+    //     return getDom;
+    // }
+    // button.addEventListener(`click`,add);
+    Promise.then(() =>{
+        console.log(`second`);
+    });
+    console.log(add()());
+    //second 
+    //first
+    //undefined
+
+
+</script>
+
+</html>

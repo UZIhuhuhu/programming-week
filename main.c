@@ -1,12 +1,12 @@
 /*
- * @Author: MozhuCY 
- * @Date: 2018-04-03 09:56:00 
+ * @Author: MozhuCY
+ * @Date: 2018-04-03 09:56:00
  * @Last Modified by: wynnxin
- * @Last Modified time: 2018-04-03 10:11:32
+ * @Last Modified time: 2018-04-04 10:11:32
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> 
+#include <string.h>
 int io=0;
 //全局记录录入学生数
 
@@ -30,6 +30,7 @@ struct course{
     char _xingzhi[10];
     int time;
     int p_num;
+    int p_all;
     int term;
 }course[100];
 //课程结构体
@@ -57,6 +58,7 @@ void _scanf(int i){
     scanf("%d",&student[i].tel);
     printf("您的班级：");
     scanf("%d",&student[i]._class);
+    student[i].cours=-1;
     io++;
 }
 //录入学生信息
@@ -70,6 +72,7 @@ void c_scanf(){
     scanf("%d",&course[cid].time);
     printf("课程总量：");
     scanf("%d",&course[cid].p_num);
+    course[cid].p_all=course[cid].p_num;
     printf("开课学期：");
     scanf("%d",&course[cid].term);
     cid++;
@@ -93,7 +96,7 @@ void c_print(int i){
     printf("课程名称：%s\n",course[i]._name);
     printf("课程性质：%s\n",course[i]._xingzhi);
     printf("开课学期：%d\n",course[i].term);
-    printf("课程总量：%d\n",course[i].p_num);
+    printf("课程总/余量：%d  %d\n",course[i].p_all,course[i].p_num);
     printf("课时：%d\n",course[i].time);
     printf("===================\n");
 }
@@ -102,14 +105,18 @@ void c_print(int i){
 int if_in(char * a){
 	int checkid=-1;
 	int i;
+	if(strlen(a)!=9){
+        printf("非法学号!\n");
+        return 2;
+	}
     for(i=0;i<io;i++){
         if(!strcmp(student[i].StudentID,a)){
-            printf("该学号已经存在!\n"); 
+            printf("该学号已经存在!\n");
             return 1;
         }
 	}
 	if(!(checkid+1)){
-        strcpy(student[io].StudentID,a); 
+        strcpy(student[io].StudentID,a);
         return 0;
     }
 }
@@ -172,7 +179,7 @@ void count(){
 	printf("=====================\n");
 	printf("已录入学生人数: %d\n",io);
 	printf("=====================\n");
-	 
+
 }
 //分割线
 
@@ -187,7 +194,7 @@ int ccheck(){
 	int i,checkid=-1;
 	char name[20];
 	printf("请输入课程名称:");
-	scanf("%s",name); 
+	scanf("%s",name);
     for(i=0;i<cid;i++){
         if(!strcmp(course[i]._name,name)){
             checkid=i;
@@ -217,7 +224,7 @@ void _del(int id){
 		strcpy(student[i].sex,student[i+1].sex);
 		student[i].tel=student[i+1].tel;
 		student[i]._class=student[i+1]._class;
-		io--; 
+		io--;
 	}
 }
 //删除学生
@@ -226,18 +233,18 @@ void del(){
 	int id = check();
 	char ch[1];
 	while(1){
-		printf("确定删除此数据吗(Y/N)\n"); 
+		printf("确定删除此数据吗(Y/N)\n");
 		scanf("%s",ch);
 		if(!strcmp(ch,"Y")){
 			_del(id);
-			printf("删除成功\n"); 
-			return;	
+			printf("删除成功\n");
+			return;
 		}
 		else if(!strcmp(ch,"N")){
 			return;
-		} 
+		}
 	}
-} 
+}
 //删除确定
 
 void save(){
@@ -258,7 +265,7 @@ void save(){
 	fclose(fp);
 	printf("===============\n");
 	printf("[*]文件保存成功\n");
-	printf("===============\n"); 
+	printf("===============\n");
 }
 //保存学生信息到本地
 
@@ -278,7 +285,7 @@ void csave(){
 	fclose(fp);
 	printf("===============\n");
 	printf("[*]文件保存成功\n");
-	printf("===============\n"); 
+	printf("===============\n");
 }
 //保存课程信息到本地
 
@@ -286,16 +293,16 @@ void read(){
 	FILE * fp;
 	fp = fopen("message.txt","r");
 	while(1){
-		int flag=0; 
+		int flag=0;
 		fscanf(fp,"%d",&flag);
 		if(flag){
 			printf("===============\n");
-			printf("[*]文件读取成功\n"); 
+			printf("[*]文件读取成功\n");
 			printf("===============\n");
 			return;
-		} 
+		}
 		fscanf(fp,"%s",student[io].StudentID);
-		replace(student[io].StudentID); 
+		replace(student[io].StudentID);
     	fscanf(fp,"%s",student[io].name);
     	fscanf(fp,"%d",&student[io].age);
     	fscanf(fp,"%s",student[io].sex);
@@ -312,16 +319,16 @@ void cread(){
 	FILE * fp;
 	fp = fopen("course.txt","r");
 	while(1){
-		int flag=0; 
+		int flag=0;
 		fscanf(fp,"%d",&flag);
 		if(flag){
 			printf("===============\n");
-			printf("[*]文件读取成功\n"); 
+			printf("[*]文件读取成功\n");
 			printf("===============\n");
 			return;
-		} 
+		}
 		fscanf(fp,"%s",course[cid]._name);
-		replace(student[cid].StudentID); 
+		replace(student[cid].StudentID);
     	fscanf(fp,"%s",course[cid]._xingzhi);
     	fscanf(fp,"%d",&course[cid].time);
     	fscanf(fp,"%d",&course[cid].p_num);
@@ -359,7 +366,7 @@ void stdu(){
             	read();
             	break;
             case 9:
-				return; 
+				return;
             default:
                 printf("ERROR");
         }
@@ -378,17 +385,17 @@ void cour(){
                 break;
             case 2:
 				c_check();
-				break; 
+				break;
 			case 3:
 				csave();
-				break; 
+				break;
 			case 4:
 				cread();
 				break;
 			case 5:
 				c_print(0);
             case 9:
-				return; 
+				return;
             default:
                 printf("ERROR");
         }
@@ -399,20 +406,29 @@ void cour(){
 void chose_cour(){
 	int i=0;
 	int id;
-	printf("请输入你的学号\n"); 
+	printf("请输入你的学号\n");
 	id = check();
 	if(id==-1){
-		return; 
+		return;
 	}
 	for(i=0;i<cid;i++){
-		printf("可选课程 [%d]\n",i+1); 
+		printf("可选课程 [%d]\n",i+1);
 		c_print(i);
 	}
 	printf("请输入你要选择课程的编号: ");
 	int chose;
 	scanf("%d",&chose);
+    if(course[chose-1].p_num<=0){
+        printf("课程已满");
+        return;
+    }
+    if(chose-1==student[id].cours){
+        printf("同学，你已经选过这门课啦！");
+        return;
+    }
 	student[id].cours = chose-1;
-	printf("选课成功!不要翘课哦!\n"); 
+	course[id].p_num-=1;
+	printf("选课成功!不要翘课哦!\n");
 }
 //选课系统
 
@@ -431,26 +447,27 @@ void scprint(int i){
 
 void look(){
 		int id;
-	printf("请输入你的学号\n"); 
+	printf("请输入你的学号\n");
 	id = check();
 	if(id==-1){
-		return; 
+		return;
 	}
 	scprint(id);
-} 
+}
 //确认学号
 
 void t_cour(){
 	int id;
-	printf("请输入你的学号\n"); 
+	printf("请输入你的学号\n");
 	id = check();
 	if(id==-1){
-		return; 
+		return;
 	}
 	int c_id;
-	printf("确定退选已选课程(1.确定  2.取消)"); 
+	printf("确定退选已选课程(1.确定  2.取消)");
 	scanf("%d",&c_id);
 	if(c_id==1){
+		course[student[id].cours].p_num+=1;
 		student[id].cours =-1;
 		printf("退选成功!\n");
 	}
@@ -460,8 +477,8 @@ void t_cour(){
 
 void chos(){
 	while(1){
-		int i; 
-		printf("\n=============\n[1] 选课\n[2] 退课\n[3]查看当前信息\n=============\n请输入选择：");
+		int i;
+		printf("\n=============\n[1] 选课\n[2] 退课\n[3] 查看当前信息\n=============\n请输入选择：");
 		scanf("%d",&i);
 		switch(i){
 			case 1:
@@ -469,7 +486,7 @@ void chos(){
 				break;
 			case 2:
 				t_cour();
-				break; 
+				break;
 			case 3:
 				look();
 				break;
@@ -481,30 +498,30 @@ void chos(){
 //选课子系统
 
 int main(){
-    printf("============\n");
+    printf("===============\n");
     printf("学生选修课系统:\n");
-    printf("============\n");
+    printf("===============\n");
 	//美化界面
     int i;
     while(1){
-    	    printf("\n===================\n[1] 学生信息管理\n[2] 课程信息管理\n[3] 学生选课\n[4] 离开程序\n===================\n请输入选择："); 
+    	    printf("\n===================\n[1] 学生信息管理\n[2] 课程信息管理\n[3] 学生选课\n[4] 离开程序\n===================\n请输入选择：");
     	scanf("%d",&i);
     	switch(i){
-			case 1: 
+			case 1:
     			stdu();
     			break;
 			case 2:
-				cour(); 
+				cour();
 				break;
 			case 3:
 				chos();
-				break; 
+				break;
 			case 4:
 				return 0;
 			default:
 				printf("ERROR\n");
-				break; 
-    	} 
-    } 
+				break;
+    	}
+    }
 }
 //主函数
