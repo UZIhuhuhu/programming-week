@@ -1,10 +1,22 @@
+/*
+ * @Author: MozhuCY
+ * @Date: 2018-04-03 09:56:00
+ * @Last Modified by: wynnxin
+ * @Last Modified time: 2018-04-08 10:11:32
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 int io=0;
+//统计录入学生数量
+
 int cid=0;
-char base64[65]="RBCYEFGHIJKLMN0PQASTUVWXD4ZbcdefghijklmnopqrstuvwxyzO123a56789+/";
+//统计录入课程数量
+
+char base64[65]= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+//魔改base64 map
+
 struct student{
     int age;
     char name[20];
@@ -14,6 +26,8 @@ struct student{
     char tel[13];
     int cours;
 }student[100];
+//学生结构体
+
 struct course{
     int ID;
     char _name[20];
@@ -23,12 +37,18 @@ struct course{
     int p_num;
     int term;
 }course[100];
+//课程结构体
+
 int isnum(char *str){
     return !(strspn(str,"0123456789")==strlen(str));
 }
+//验证手机号
+
 int id_isnum(char *str){
     return (strspn(str,"0123456789")==8);
 }
+//验证学号
+
 char * abase64(char * str){
     long len;
     long str_len;
@@ -62,10 +82,14 @@ char * abase64(char * str){
     }
     return res;
 }
+//魔改的base64算法
+
 void replace(char * a){
     int len = strlen(a);
     a[len]='\x00';
 }
+//封装replace函数,去除回车
+
 int if_in(char * a){
     int checkid=-1;
     int i;
@@ -84,7 +108,10 @@ int if_in(char * a){
         strcpy(student[io].StudentID,a);
         return 0;
     }
+    return 0;
 }
+//验证学号是否重复和学号
+
 void c_scanf(){
     printf("课程名字：");
     scanf("%s",course[cid]._name);
@@ -99,6 +126,8 @@ void c_scanf(){
     scanf("%d",&course[cid].term);
     cid++;
 }
+//录入课程信息函数
+
 void _scanf(int i){
     char a[20];
     int flag;
@@ -146,6 +175,7 @@ void _scanf(int i){
     student[i].cours=-1;
     io++;
 }
+//录入学生信息函数
 
 void _print(int i){
     printf("===================\n");
@@ -157,15 +187,19 @@ void _print(int i){
     printf("班级：%d\n",student[i]._class);
     printf("===================\n");
 }
+//打印学生信息
+
 void c_print(int i){
     printf("===================\n");
     printf("课程名称：%s\n",course[i]._name);
     printf("课程性质：%s\n",course[i]._xingzhi);
     printf("开课学期：%d\n",course[i].term);
-    printf("课程总/余量：%d  %d\n",course[i].p_all,course[i].p_num);
+    printf("课程余量：%d\n",course[i].p_num);
     printf("课时：%d\n",course[i].time);
     printf("===================\n");
 }
+//打印课程信息
+
 int check(){
     char id[20];
     int i;
@@ -183,6 +217,8 @@ int check(){
     }
     return checkid;
 }
+//查询学生信息
+
 void edit(){
     char a[20];
     int checkid=check();
@@ -220,6 +256,8 @@ void edit(){
             return;
     }
 }
+//选择编辑学生信息
+
 void count(){
     printf("=====================\n");
     printf("已录入学生人数: %d\n",io);
@@ -247,6 +285,8 @@ int ccheck(){
     }
     return checkid;
 }
+//检查课程信息
+
 void c_check(){
     int i=ccheck();
     if(i!=-1) c_print(i);
@@ -280,6 +320,8 @@ void del(){
         }
     }
 }
+//删除学生信息功能和提示
+
 void save(){
     FILE * fp ;
     fp = fopen("message.txt","w");
@@ -300,6 +342,8 @@ void save(){
     printf("[*]文件保存成功\n");
     printf("===============\n");
 }
+//学生信息文件保存
+
 void csave(){
     FILE * fp ;
     fp = fopen("course.txt","w");
@@ -318,7 +362,9 @@ void csave(){
     printf("[*]文件保存成功\n");
     printf("===============\n");
 }
-void read(){
+//课程信息文件保存
+
+void _read(){
     FILE * fp;
     fp = fopen("message.txt","r");
     while(1){
@@ -342,6 +388,8 @@ void read(){
     }
     
 }
+//学生信息文件读入
+
 void cread(){
     FILE * fp;
     fp = fopen("course.txt","r");
@@ -363,6 +411,8 @@ void cread(){
         cid+=1;
     }
 }
+//课程信息文件读入
+
 void stdu(){
     int i;
     while(1){
@@ -388,7 +438,7 @@ void stdu(){
                 save();
                 break;
             case 7:
-                read();
+                _read();
                 break;
             case 9:
                 return;
@@ -397,6 +447,8 @@ void stdu(){
         }
     }
 }
+//学生子系统的封装
+
 void cour(){
     int i;
     while(1){
@@ -424,6 +476,8 @@ void cour(){
         }
     }
 }
+//课程子系统的封装
+
 void chose_cour(){
     int i=0;
     int id;
@@ -451,6 +505,8 @@ void chose_cour(){
     course[id].p_num-=1;
     printf("选课成功!不要翘课哦!\n");
 }
+//选课系统的函数
+
 void scprint(int i){
     printf("===================\n");
     printf("姓名：%s\n",student[i].name);
@@ -462,6 +518,8 @@ void scprint(int i){
     printf("已选课程: %s\n",course[student[i].cours]._name);
     printf("===================\n");
 }
+//查看学生选课
+
 void look(){
     int id;
     printf("请输入你的学号\n");
@@ -471,6 +529,7 @@ void look(){
     }
     scprint(id);
 }
+
 void t_cour(){
     int id;
     printf("请输入你的学号\n");
@@ -487,6 +546,8 @@ void t_cour(){
     }
     return;
 }
+//退选课程功能
+
 void chos(){
     while(1){
         int i;
@@ -507,11 +568,13 @@ void chos(){
         }
     }
 }
+//选课子系统
+
 void pwd_cour(){
     char pwd[20];
     printf("请输入管理员密码:");
     scanf("%s",pwd);
-    if(!strcmp(abase64(pwd),"DWAtZWa=")){
+    if(!strcmp(abase64(pwd),"QURNSU4=")){
         printf("登入成功!\n");
         cour();
     }
@@ -519,31 +582,35 @@ void pwd_cour(){
         printf("非法用户!!!你没有此子程序的使用权限!!!\n");
     return;
 }
+//根据base64魔改验证身份
+
 int main(){
     printf("==================================\n");
     printf("学生选修课系统：Powered by W8Cloud\n");
     printf("==================================\n");
     int i;
-//    if(!IsDebuggerPresent()){
-        while(1){
-            printf("\n===================\n[1] 学生信息管理\n[2] 课程信息管理\n[3] 学生选课\n[4] 离开程序\n===================\n请输入选择：");
-            scanf("%d",&i);
-            switch(i){
-                case 1:
-                    stdu();
-                    break;
-                case 2:
-                    pwd_cour();
-                    break;
-                case 3:
-                    chos();
-                    break;
-                case 4:
-                    return 0;
-                default:
-                    printf("ERROR\n");
-                    break;
-            }
+    //    if(!IsDebuggerPresent()){
+    while(1){
+        printf("\n===================\n[1] 学生信息管理\n[2] 课程信息管理\n[3] 学生选课\n[4] 离开程序\n===================\n请输入选择：");
+        scanf("%d",&i);
+        switch(i){
+            case 1:
+                stdu();
+                break;
+            case 2:
+                pwd_cour();
+                break;
+            case 3:
+                chos();
+                break;
+            case 4:
+                return 0;
+            default:
+                printf("ERROR\n");
+                break;
+        }
         
     }
 }
+//主函数
+
