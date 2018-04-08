@@ -13,6 +13,8 @@ int io=0;
 int cid=0;
 //全局记录课程数
 
+char base64[65]="ABCDEFGHIJKLMN0PQRSTUVWXYZabcdefghijklmnopqrstuvwxyzO123456789+/";
+
 struct student{
     int age;
     char name[20];
@@ -34,6 +36,41 @@ struct course{
     int term;
 }course[100];
 //课程结构体
+
+
+char * abase64(char * str){  
+    long len;  
+    long str_len;  
+    char *res;  
+    int i,j;
+    str_len=strlen(str);  
+    if(str_len % 3 == 0)  
+        len=str_len/3*4;  
+    else  
+        len=(str_len/3+1)*4;  
+  
+    res=malloc(sizeof(char)*len+1);  
+    res[len]='\0';  
+    for(i=0,j=0;i<len-2;j+=3,i+=4)  
+    {  
+        res[i]=base64[str[j]>>2];
+        res[i+1]=base64[(str[j]&0x3)<<4 | (str[j+1]>>4)];  
+        res[i+2]=base64[(str[j+1]&0xf)<<2 | (str[j+2]>>6)];
+        res[i+3]=base64[str[j+2]&0x3f];
+    }  
+  
+    switch(str_len % 3)  
+    {  
+        case 1:  
+            res[i-2]='=';  
+            res[i-1]='=';  
+            break;  
+        case 2:  
+            res[i-1]='=';  
+            break;  
+    }  
+  	return res;
+}
 
 void replace(char * a){
 	int len = strlen(a);
@@ -497,6 +534,20 @@ void chos(){
 }
 //选课子系统
 
+void pwd_cour(){
+	char pwd[20];
+	printf("请输入管理员密码:");
+	scanf("%s",pwd);
+	if(!strcmp(abase64(pwd),"YWRtaW4=")){
+		printf("登入成功!\n");
+		cour(); 
+	}
+	else
+		printf("非法用户!!!你没有此子程序的使用权限!!!\n");
+	return; 
+}
+
+
 int main(){
     printf("===============\n");
     printf("学生选修课系统:\n");
@@ -511,7 +562,7 @@ int main(){
     			stdu();
     			break;
 			case 2:
-				cour();
+				pwd_cour();
 				break;
 			case 3:
 				chos();
