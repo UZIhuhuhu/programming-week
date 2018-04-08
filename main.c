@@ -1,7 +1,13 @@
+/*
+ * @Author: MozhuCY
+ * @Date: 2018-04-03 09:56:00
+ * @Last Modified by: wynnxin
+ * @Last Modified time: 2018-04-08 10:11:32
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <windows.h>
 int io=0;
 int cid=0;
 char base64[65]="RBCYEFGHIJKLMN0PQASTUVWXD4ZbcdefghijklmnopqrstuvwxyzO123a56789+/";
@@ -524,7 +530,7 @@ int main(){
     printf("学生选修课系统：Powered by W8Cloud\n");
     printf("==================================\n");
     int i;
-//    if(!IsDebuggerPresent()){
+    if(!IsDebuggerPresent()){
         while(1){
             printf("\n===================\n[1] 学生信息管理\n[2] 课程信息管理\n[3] 学生选课\n[4] 离开程序\n===================\n请输入选择：");
             scanf("%d",&i);
@@ -544,6 +550,6 @@ int main(){
                     printf("ERROR\n");
                     break;
             }
-        
+        }
     }
 }
