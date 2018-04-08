@@ -99,7 +99,8 @@ void c_scanf(){
     printf("学时：");
     scanf("%d",&course[cid].time);
     printf("课程总量：");
-    scanf("%d",&course[cid].p_num);
+    scanf("%d",&course[cid].p_all);
+    course[cid].p_num=course[cid].p_all;
     printf("开课学期：");
     scanf("%d",&course[cid].term);
     cid++;
@@ -148,6 +149,7 @@ void _scanf(int i){
         printf("错误！你的班级是：%d 系统已经帮你自动改正\n",*(student[i].StudentID+6)-48);
         student[i]._class = *(student[i].StudentID+6)-48;
     }
+    student[i].cours=-1;
     io++;
 }
 
